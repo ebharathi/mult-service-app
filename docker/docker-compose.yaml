@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: postgres
+    build:
+      context: .
+      dockerfile: postgres.Dockerfile
+    restart: always
+    env_file:
+      - ./docker.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_container_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: always
+    env_file:
+      - ./docker.env
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+ 
+  app:
+    container_name: app
+    build:
+      context: ../app
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - ../app/.env
+    ports:
+      - "3000:3000"
+
+  graphql-service:
+    container_name: graphql-service
+    build:
+      context: ../services/graphql
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - ../services/graphql/.env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+  
+  gen-ai-service:
+    container_name: gen-ai-service
+    build:
+      context: ../services/gen-ai
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - ../services/gen-ai/.env
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres
+   
+volumes:
+  pg_container_data:
+    driver: local

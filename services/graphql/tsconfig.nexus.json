@@ -1,0 +1,11 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+      "module": "commonjs",
+      "noEmit": false,
+      "outDir": "dist-script",
+      "moduleResolution": "node" // Not 'bundler'
+    },
+    "exclude": ["node_modules", "dist"]
+  }
+  

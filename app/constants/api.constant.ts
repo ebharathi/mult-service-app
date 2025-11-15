@@ -1,0 +1,1 @@
+export const CORE_SERVICE='http://localhost:8080'
