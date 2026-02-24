@@ -12,9 +12,9 @@ export const UserType = objectType({
         t.field(np.users.name)
         t.field(np.users.image)
         t.field(np.users.role)
-        t.field(np.users.createdAt)
-        t.field(np.users.updatedAt)
-        t.field(np.users.googleId)
-        t.field(np.users.utmSource)
+        t.field(np.users.created_at)
+        t.field(np.users.updated_at)
+        t.field(np.users.google_id)
+        t.field(np.users.utm_source)
     }
 })

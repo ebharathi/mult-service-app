@@ -8,8 +8,8 @@ export const GET_ME = gql`
       name
       email
       role
-      createdAt
-      updatedAt
+      created_at
+      updated_at
     }
   }
 `;

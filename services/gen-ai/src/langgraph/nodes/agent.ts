@@ -1,4 +1,4 @@
-import { createAgent } from "../../advanced/agent";
+import { createAgent } from "../model";
 import { AgentStateSchema } from "../state";
 import { GraphNode } from "@langchain/langgraph";
 

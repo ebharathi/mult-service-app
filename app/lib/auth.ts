@@ -62,7 +62,7 @@ export const authOptions: NextAuthOptions = {
               name: user.name || '',
               image: user.image || '',
               role: 'OTHER',
-              googleId: account.providerAccountId,
+              google_id: account.providerAccountId,
             },
           });
           onInit()
@@ -70,29 +70,27 @@ export const authOptions: NextAuthOptions = {
       }
       return true;
     },
-    async jwt({ token, user }) {
-      // Initial sign in - user object is provided
-      const current_user_email=  user?.email || token?.email;
-      console.log("[+] JWT - Initial sign in for:", current_user_email);
-      if (current_user_email) {
-        const currentUser = await prisma.users.findUnique({
-          where: { email: current_user_email },
-        });
+    async jwt({ token, user, trigger }) {
+      // Initial sign-in — populate token from DB
+      if (user?.email) {
+        const currentUser = await prisma.users.findUnique({ where: { email: user.email },select:{id:true, role:true, email:true, name:true, image:true} })
         if (currentUser) {
-          token.userId = currentUser.id;
-          token.role = currentUser.role as 'ADMIN' | 'OTHER';
-          token.email = currentUser.email;
-          token.name = currentUser?.name || '';
-          token.picture = currentUser?.image || user?.image || '';
-          token.refreshedAt = Date.now();
-
+          token.userId = currentUser.id
+          token.role = currentUser.role
+          token.email = currentUser.email
+          token.name = currentUser?.name || ''
+          token.picture = currentUser.image || user?.image || ''
         }
       }
+      // Triggered by useSession().update() — re-fetch fresh data from DB
+      if (trigger === "update" && token.email) {
+        console.log("[+] JWT callback: trigger update, token.email:",token.email)
+  
+      }
+      // On regular requests, return token as-is (no DB query, no mutation)
       return token;
     },
     async session({ session, token }) {
-      console.log("[+] Session token:",token)
-      console.log("[+] Session session:",session)
       if (token && session.user) {
         session.user.id = token.userId
         session.user.role = token.role
