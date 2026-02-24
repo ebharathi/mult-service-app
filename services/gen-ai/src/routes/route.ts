@@ -1,7 +1,6 @@
 import express from 'express';
 import { authMiddleware } from '../middlewares/auth';
 import { advancedModelController } from '../controllers/langchain.controller';
-import { baseModelController } from '../controllers/basemodel.controller';
 import { NextFunction, Request, Response } from 'express';
 const router = express.Router();
 
@@ -14,13 +13,7 @@ const setStreamingHeaders = (req: Request, res: Response,next: NextFunction) => 
   next();
 }
 
-//Base model endpoint
-router.post('/chat', authMiddleware, setStreamingHeaders, baseModelController);
-
-//Langchain model with tools capabilities
-router.post('/chat/advanced', authMiddleware, advancedModelController);
-
-
+//LangGraph chat endpoint (streaming)
+router.post('/chat', authMiddleware, setStreamingHeaders, advancedModelController);
 
 export default router;
-
