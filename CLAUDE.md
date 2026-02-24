@@ -100,6 +100,3 @@ cd services/gen-ai && npm run dev  # port 8081 (nodemon)
 | `NEXTAUTH_URL` | app | Frontend URL (http://localhost:3000) |
 | `GOOGLE_SIGNIN_CLIENT_ID` | app | Google OAuth client ID |
 | `GOOGLE_SIGNIN_CLIENT_SECRET` | app | Google OAuth client secret |
-| `LLM_API_KEY` | gen-ai | API key for LLM provider |
-| `LLM_MODEL` | gen-ai | Model name |
-| `LLM_BASE_URL` | gen-ai | OpenAI-compatible API base URL |
