@@ -9,7 +9,7 @@ import cookieParser from 'cookie-parser';
 import apiRoutes from './routes/route';
 import { prisma } from "./prisma";
 
-const PORT = process.env.PORT || 8081;
+const PORT = 8081;
 
 async function startServer() {
     const app = express();

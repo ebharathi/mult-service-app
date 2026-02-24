@@ -22,13 +22,13 @@ enum Role {
 }
 
 type users {
-  createdAt: DateTime!
+  created_at: DateTime!
   email: String!
-  googleId: String
+  google_id: String
   id: ID!
   image: String
   name: String
   role: Role!
-  updatedAt: DateTime!
-  utmSource: String
+  updated_at: DateTime!
+  utm_source: String
 }

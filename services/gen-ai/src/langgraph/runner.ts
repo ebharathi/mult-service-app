@@ -50,7 +50,7 @@ export async function runChatStream(
       }
       else if (evt.event === "on_tool_end") {
         onChunk(`\n\ndata: tool_end<${evt.name}>\n\n`,false);
-       
+
       }
   }
 

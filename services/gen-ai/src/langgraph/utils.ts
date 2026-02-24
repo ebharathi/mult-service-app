@@ -17,7 +17,7 @@ export function parseToolJsonResult(resultString: string): {
     messageText: string;
 } {
     let messageText = resultString;
-  
+
     try {
         const parsed = JSON.parse(resultString);
         if (parsed && typeof parsed === "object") {

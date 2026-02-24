@@ -12,7 +12,8 @@ import cookieParser from 'cookie-parser';
 import { schema } from './modules/schema';
 import { createContext, prisma } from './modules/context';
 import { authMiddleware } from "./middlewares/auth";
-const PORT =  process.env.PORT ;
+
+const PORT =  8080;
 
 async function startServer() {
     const app = express();

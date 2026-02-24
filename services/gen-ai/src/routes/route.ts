@@ -1,6 +1,6 @@
 import express from 'express';
 import { authMiddleware } from '../middlewares/auth';
-import { advancedModelController } from '../controllers/langchain.controller';
+import { chatController } from '../controllers/chat.controller';
 import { NextFunction, Request, Response } from 'express';
 const router = express.Router();
 
@@ -14,6 +14,6 @@ const setStreamingHeaders = (req: Request, res: Response,next: NextFunction) => 
 }
 
 //LangGraph chat endpoint (streaming)
-router.post('/chat', authMiddleware, setStreamingHeaders, advancedModelController);
+router.post('/chat', authMiddleware, setStreamingHeaders, chatController);
 
 export default router;

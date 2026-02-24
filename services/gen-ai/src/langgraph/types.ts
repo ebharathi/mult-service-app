@@ -11,7 +11,7 @@ declare module "@langchain/core/tools" {
       type DynamicToolInput,
     } from "@langchain/core/dist/tools/index.js";
   }
-  
+
   declare module "@langchain/core/messages" {
     export {
       HumanMessage,
@@ -25,5 +25,3 @@ declare module "@langchain/core/tools" {
       type ToolMessageFields,
     } from "@langchain/core/dist/messages/index.js";
   }
-  
-  

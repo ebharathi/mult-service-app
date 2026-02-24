@@ -1,7 +1,7 @@
 // Use require for runtime since we're in CommonJS
 const { DynamicStructuredTool } = require("@langchain/core/tools");
 import { z } from "zod";
-import { logger } from "../../logger";
+import { logger } from "../logger";
 
 /**
  * Tool to add two numbers together
@@ -20,4 +20,3 @@ export const addNumbersTool = new DynamicStructuredTool({
     return `The sum of ${a} and ${b} is ${result}.`;
   },
 });
-

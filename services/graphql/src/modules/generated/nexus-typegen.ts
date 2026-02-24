@@ -4,7 +4,7 @@
  */
 
 
-import type { Context } from "../context"
+import type { Context } from "./../context"
 import type { core } from "nexus"
 declare global {
   interface NexusGenCustomInputMethods<TypeName extends string> {
@@ -56,15 +56,15 @@ export interface NexusGenScalars {
 export interface NexusGenObjects {
   Query: {};
   users: { // root type
-    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    created_at: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
-    googleId?: string | null; // String
+    google_id?: string | null; // String
     id: string; // ID!
     image?: string | null; // String
     name?: string | null; // String
     role: NexusGenEnums['Role']; // Role!
-    updatedAt: NexusGenScalars['DateTime']; // DateTime!
-    utmSource?: string | null; // String
+    updated_at: NexusGenScalars['DateTime']; // DateTime!
+    utm_source?: string | null; // String
   }
 }
 
@@ -83,15 +83,15 @@ export interface NexusGenFieldTypes {
     getMe: NexusGenRootTypes['users'] | null; // users
   }
   users: { // field return type
-    createdAt: NexusGenScalars['DateTime']; // DateTime!
+    created_at: NexusGenScalars['DateTime']; // DateTime!
     email: string; // String!
-    googleId: string | null; // String
+    google_id: string | null; // String
     id: string; // ID!
     image: string | null; // String
     name: string | null; // String
     role: NexusGenEnums['Role']; // Role!
-    updatedAt: NexusGenScalars['DateTime']; // DateTime!
-    utmSource: string | null; // String
+    updated_at: NexusGenScalars['DateTime']; // DateTime!
+    utm_source: string | null; // String
   }
 }
 
@@ -100,15 +100,15 @@ export interface NexusGenFieldTypeNames {
     getMe: 'users'
   }
   users: { // field return type name
-    createdAt: 'DateTime'
+    created_at: 'DateTime'
     email: 'String'
-    googleId: 'String'
+    google_id: 'String'
     id: 'ID'
     image: 'String'
     name: 'String'
     role: 'Role'
-    updatedAt: 'DateTime'
-    utmSource: 'String'
+    updated_at: 'DateTime'
+    utm_source: 'String'
   }
 }
 

@@ -1,13 +1,13 @@
-import { runChatStream } from "../models/langgraph/runner";
+import { runChatStream } from "../langgraph/runner";
 import { Response } from "express";
-import { DEFAULT_SYSTEM_PROMPT } from "../models/advanced/prompt/default.prompt";
+import { DEFAULT_SYSTEM_PROMPT } from "../langgraph/prompt";
 
 interface ConversationHistory {
   role: "user" | "assistant" | "system";
   content: string;
 }
 
-export const advancedModelController = async (req: any, res: Response): Promise<void> => {
+export const chatController = async (req: any, res: Response): Promise<void> => {
     try {
         console.log("CHAT CONTROLLER - REQUEST STARTED")
         const { message } = req.body;
