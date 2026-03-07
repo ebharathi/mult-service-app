@@ -56,7 +56,7 @@ export const authOptions: NextAuthOptions = {
 
         if (!existingUser) {
           console.log("[+] Creating user:",user.email)
-          await prisma.users.create({
+          const newUser = await prisma.users.create({
             data: {
               email: user.email || '',
               name: user.name || '',
@@ -65,6 +65,43 @@ export const authOptions: NextAuthOptions = {
               google_id: account.providerAccountId,
             },
           });
+
+          // Auto-create a default workspace for the new user
+          const workspaceName = `${user.name || user.email}'s Workspace`;
+          await prisma.workspaces.create({
+            data: {
+              name: workspaceName,
+              created_by: newUser.id,
+              members: {
+                create: {
+                  user_id: newUser.id,
+                  role: 'ADMIN',
+                },
+              },
+            },
+          });
+          console.log("[+] Created default workspace for:", user.email);
+
+          // Check and accept any pending invitations for this email
+          const pendingInvites = await prisma.workspace_invitations.findMany({
+            where: { email: newUser.email, accepted: false },
+          });
+          for (const invite of pendingInvites) {
+            if (invite.expires_at > new Date()) {
+              await prisma.workspace_members.create({
+                data: {
+                  workspace_id: invite.workspace_id,
+                  user_id: newUser.id,
+                  role: invite.role,
+                },
+              });
+              await prisma.workspace_invitations.update({
+                where: { id: invite.id },
+                data: { accepted: true },
+              });
+            }
+          }
+
           onInit()
         }
       }
@@ -101,7 +138,7 @@ export const authOptions: NextAuthOptions = {
     },
 
     async redirect({ url, baseUrl }) {
-      return baseUrl;
+      return `${baseUrl}/dashboard`;
     }
   },
   cookies:{

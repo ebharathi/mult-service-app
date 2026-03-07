@@ -5,6 +5,7 @@ import { setContext } from "@apollo/client/link/context";
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 import { ReactNode } from "react";
 import { CORE_SERVICE } from "@/constants/api.constant";
+import { getWorkspaceId } from "@/lib/workspace";
 
 const GRAPHQL_API = CORE_SERVICE + "/api/graphql";
 
@@ -21,13 +22,12 @@ const httpLink = createHttpLink({
 
 // Middleware to inject headers
 const authLink = setContext(async (_, { headers }) => {
-  if (typeof window !== "undefined") {
-    //to get something from page url
-  }
+  const workspaceId = getWorkspaceId();
 
   return {
     headers: {
       ...headers,
+      ...(workspaceId ? { "x-workspace-id": workspaceId } : {}),
     },
   };
 });
@@ -40,4 +40,3 @@ export const client = new ApolloClient({
 export function Apollo({ children }: { children: ReactNode }) {
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
 }
-
