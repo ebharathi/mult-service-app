@@ -41,6 +41,7 @@ export interface NexusGenInputs {
 
 export interface NexusGenEnums {
   Role: "ADMIN" | "OTHER"
+  WorkspaceRole: "ADMIN" | "MEMBER"
 }
 
 export interface NexusGenScalars {
@@ -54,6 +55,7 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  Mutation: {};
   Query: {};
   users: { // root type
     created_at: NexusGenScalars['DateTime']; // DateTime!
@@ -65,6 +67,31 @@ export interface NexusGenObjects {
     role: NexusGenEnums['Role']; // Role!
     updated_at: NexusGenScalars['DateTime']; // DateTime!
     utm_source?: string | null; // String
+  }
+  workspace_invitations: { // root type
+    accepted: boolean; // Boolean!
+    created_at: NexusGenScalars['DateTime']; // DateTime!
+    email: string; // String!
+    expires_at: NexusGenScalars['DateTime']; // DateTime!
+    id: string; // ID!
+    invited_by: string; // String!
+    role: NexusGenEnums['WorkspaceRole']; // WorkspaceRole!
+    token: string; // String!
+    workspace_id: string; // String!
+  }
+  workspace_members: { // root type
+    created_at: NexusGenScalars['DateTime']; // DateTime!
+    id: string; // ID!
+    role: NexusGenEnums['WorkspaceRole']; // WorkspaceRole!
+    user_id: string; // String!
+    workspace_id: string; // String!
+  }
+  workspaces: { // root type
+    created_at: NexusGenScalars['DateTime']; // DateTime!
+    created_by: string; // String!
+    id: string; // ID!
+    name: string; // String!
+    updated_at: NexusGenScalars['DateTime']; // DateTime!
   }
 }
 
@@ -79,8 +106,19 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
+  Mutation: { // field return type
+    acceptInvitation: NexusGenRootTypes['workspace_members']; // workspace_members!
+    createWorkspace: NexusGenRootTypes['workspaces']; // workspaces!
+    inviteToWorkspace: NexusGenRootTypes['workspace_invitations']; // workspace_invitations!
+    removeMember: NexusGenRootTypes['workspace_members']; // workspace_members!
+    updateMemberRole: NexusGenRootTypes['workspace_members']; // workspace_members!
+  }
   Query: { // field return type
     getMe: NexusGenRootTypes['users'] | null; // users
+    getMyWorkspaces: NexusGenRootTypes['workspaces'][]; // [workspaces!]!
+    getWorkspace: NexusGenRootTypes['workspaces'] | null; // workspaces
+    getWorkspaceInvitations: NexusGenRootTypes['workspace_invitations'][]; // [workspace_invitations!]!
+    getWorkspaceMembers: NexusGenRootTypes['workspace_members'][]; // [workspace_members!]!
   }
   users: { // field return type
     created_at: NexusGenScalars['DateTime']; // DateTime!
@@ -93,11 +131,49 @@ export interface NexusGenFieldTypes {
     updated_at: NexusGenScalars['DateTime']; // DateTime!
     utm_source: string | null; // String
   }
+  workspace_invitations: { // field return type
+    accepted: boolean; // Boolean!
+    created_at: NexusGenScalars['DateTime']; // DateTime!
+    email: string; // String!
+    expires_at: NexusGenScalars['DateTime']; // DateTime!
+    id: string; // ID!
+    invited_by: string; // String!
+    role: NexusGenEnums['WorkspaceRole']; // WorkspaceRole!
+    token: string; // String!
+    workspace_id: string; // String!
+  }
+  workspace_members: { // field return type
+    created_at: NexusGenScalars['DateTime']; // DateTime!
+    id: string; // ID!
+    role: NexusGenEnums['WorkspaceRole']; // WorkspaceRole!
+    user: NexusGenRootTypes['users'] | null; // users
+    user_id: string; // String!
+    workspace_id: string; // String!
+  }
+  workspaces: { // field return type
+    created_at: NexusGenScalars['DateTime']; // DateTime!
+    created_by: string; // String!
+    id: string; // ID!
+    members: Array<NexusGenRootTypes['workspace_members'] | null> | null; // [workspace_members]
+    name: string; // String!
+    updated_at: NexusGenScalars['DateTime']; // DateTime!
+  }
 }
 
 export interface NexusGenFieldTypeNames {
+  Mutation: { // field return type name
+    acceptInvitation: 'workspace_members'
+    createWorkspace: 'workspaces'
+    inviteToWorkspace: 'workspace_invitations'
+    removeMember: 'workspace_members'
+    updateMemberRole: 'workspace_members'
+  }
   Query: { // field return type name
     getMe: 'users'
+    getMyWorkspaces: 'workspaces'
+    getWorkspace: 'workspaces'
+    getWorkspaceInvitations: 'workspace_invitations'
+    getWorkspaceMembers: 'workspace_members'
   }
   users: { // field return type name
     created_at: 'DateTime'
@@ -110,9 +186,69 @@ export interface NexusGenFieldTypeNames {
     updated_at: 'DateTime'
     utm_source: 'String'
   }
+  workspace_invitations: { // field return type name
+    accepted: 'Boolean'
+    created_at: 'DateTime'
+    email: 'String'
+    expires_at: 'DateTime'
+    id: 'ID'
+    invited_by: 'String'
+    role: 'WorkspaceRole'
+    token: 'String'
+    workspace_id: 'String'
+  }
+  workspace_members: { // field return type name
+    created_at: 'DateTime'
+    id: 'ID'
+    role: 'WorkspaceRole'
+    user: 'users'
+    user_id: 'String'
+    workspace_id: 'String'
+  }
+  workspaces: { // field return type name
+    created_at: 'DateTime'
+    created_by: 'String'
+    id: 'ID'
+    members: 'workspace_members'
+    name: 'String'
+    updated_at: 'DateTime'
+  }
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    acceptInvitation: { // args
+      token: string; // String!
+    }
+    createWorkspace: { // args
+      name: string; // String!
+    }
+    inviteToWorkspace: { // args
+      email: string; // String!
+      role: NexusGenEnums['WorkspaceRole'] | null; // WorkspaceRole
+      workspace_id: string; // String!
+    }
+    removeMember: { // args
+      user_id: string; // String!
+      workspace_id: string; // String!
+    }
+    updateMemberRole: { // args
+      role: NexusGenEnums['WorkspaceRole']; // WorkspaceRole!
+      user_id: string; // String!
+      workspace_id: string; // String!
+    }
+  }
+  Query: {
+    getWorkspace: { // args
+      id: string; // String!
+    }
+    getWorkspaceInvitations: { // args
+      workspace_id: string; // String!
+    }
+    getWorkspaceMembers: { // args
+      workspace_id: string; // String!
+    }
+  }
 }
 
 export interface NexusGenAbstractTypeMembers {

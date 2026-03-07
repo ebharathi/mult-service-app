@@ -14,6 +14,11 @@ enum Role {
   OTHER
 }
 
+enum WorkspaceRole {
+  ADMIN
+  MEMBER
+}
+
 model users {
   id              String    @id @default(uuid())
   email           String    @unique
@@ -26,4 +31,51 @@ model users {
   utm_source      String?
   created_at      DateTime  @default(now())
   updated_at      DateTime  @updatedAt
+
+  created_workspaces      workspaces[]            @relation("workspace_creator")
+  workspace_memberships   workspace_members[]
+  sent_invitations        workspace_invitations[] @relation("invitation_sender")
+}
+
+model workspaces {
+  id         String   @id @default(uuid())
+  name       String
+  created_by String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  creator     users                   @relation("workspace_creator", fields: [created_by], references: [id])
+  members     workspace_members[]
+  invitations workspace_invitations[]
+}
+
+model workspace_members {
+  id           String        @id @default(uuid())
+  workspace_id String
+  user_id      String
+  role         WorkspaceRole @default(MEMBER)
+  created_at   DateTime      @default(now())
+
+  workspace workspaces @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+  user      users      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([workspace_id, user_id])
+}
+
+model workspace_invitations {
+  id           String        @id @default(uuid())
+  workspace_id String
+  email        String
+  role         WorkspaceRole @default(MEMBER)
+  token        String        @unique @default(uuid())
+  invited_by   String
+  accepted     Boolean       @default(false)
+  created_at   DateTime      @default(now())
+  expires_at   DateTime
+
+  workspace workspaces @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+  sender    users      @relation("invitation_sender", fields: [invited_by], references: [id])
+
+  @@index([token])
+  @@index([email, workspace_id])
 }
